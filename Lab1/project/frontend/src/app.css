@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+@plugin 'flowbite/plugin';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary-50: #f0fdfd;
+  --color-primary-100: #e0fbfb;
+  --color-primary-200: #c2f7f8;
+  --color-primary-300: #a0eef4;
+  --color-primary-400: #7ee7f0;
+  --color-primary-500: #5edeea;
+  --color-primary-600: #3dcfe1;
+  --color-primary-700: #2bb7ca;
+  --color-primary-800: #2097a6;
+  --color-primary-900: #1b7e8d;
+
+  --grid-cols-main: 1fr 25rem 25rem;
+  --spacing-variables: calc(100svh - 49.625rem - 6rem); 
+  --spacing-task-one-logs: calc(100svh - 4.5rem - 3rem - 3rem - 38rem - 2rem);
+  --spacing-app-body: calc(100svh - 4.5rem);
+  --spacing-points-table: calc(100svh - 4.5rem - 3rem - 6rem - 3rem - 2.5rem - 3.5rem - 3.1rem)
+}
+
+
+@layer base {
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}
+
+@source "../node_modules/flowbite-svelte/dist";
