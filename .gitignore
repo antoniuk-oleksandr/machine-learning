@@ -1,2 +1,6 @@
 **/*.odt
 **/*.pdf
+**/venv
+Lab2/project/gen_training_values/*.json
+**/*.csv
+*.csv
