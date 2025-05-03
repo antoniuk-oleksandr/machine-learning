@@ -28,3 +28,15 @@ export const handleTrainingFormSubmit = async (formData: TrainingFormData) => {
 
   sendWebSocketMessage<TrainingRequestBody>(wsBody);
 }
+
+export const handleDownloadWeightsButtonClick = (weights: number[][]) => {
+  const blob = new Blob([JSON.stringify(weights)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "weights.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}

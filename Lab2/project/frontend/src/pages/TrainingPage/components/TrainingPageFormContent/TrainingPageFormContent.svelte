@@ -6,6 +6,8 @@
   import MyInput from '../../../../common-components/MyInput/MyInput.svelte'
   import { getTrainingFormInputs } from '../../helpers'
   import TrainingPageDatasetUpload from '../TrainingPageDatasetUpload/TrainingPageDatasetUpload.svelte'
+  import { weightsStore } from '../../../../common-stores/weights-store'
+  import { handleDownloadWeightsButtonClick } from '../../handlers'
 
   let inputs = $state<MyInputProps[]>([])
 
@@ -22,5 +24,18 @@
 {#each inputs as item}
   <MyInput type="number" id={item.name} {...item} />
 {/each}
-<TrainingPageDatasetUpload error={$formErrorsStore.learningValuesFiles && $formErrorsStore.learningValuesFiles[0]}/>
-<Button disabled={$formIsSubmittingStore} class="w-full mt-auto" size="lg" type="submit">Train Model</Button>
+<TrainingPageDatasetUpload
+  error={$formErrorsStore.learningValuesFiles && $formErrorsStore.learningValuesFiles[0]}
+/>
+<div class="mt-auto flex flex-col gap-6">
+  <Button disabled={$formIsSubmittingStore} class="w-full" size="lg" type="submit"
+    >Train Model</Button
+  >
+  <Button
+    type="button"
+    onclick={() => handleDownloadWeightsButtonClick($weightsStore!!)}
+    disabled={$weightsStore === undefined}
+    class="w-full mt-auto"
+    size="lg">Download Weights</Button
+  >
+</div>

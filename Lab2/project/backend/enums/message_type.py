@@ -6,3 +6,4 @@ class MessageType(IntEnum):
     TESTING = auto()
     TRAINING_RESULT = auto()
     TESTING_RESULT = auto()
+    EPOCH = auto()

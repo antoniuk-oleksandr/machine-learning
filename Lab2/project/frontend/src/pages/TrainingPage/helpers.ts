@@ -11,13 +11,6 @@ export const getTrainingFormInputs = (errors: Record<string, string[]>): MyInput
     subText: 'Regulation parameter',
   },
   {
-    name: 'eValue',
-    placeholder: 'Enter epsilon value',
-    label: 'E value',
-    error: errors.eValue && errors.eValue[0],
-    subText: 'Loss function tolerance',
-  },
-  {
     name: 'gridSize',
     placeholder: 'Enter grid size',
     label: 'Grid Size',
@@ -35,10 +28,9 @@ export const getTrainingFormInputs = (errors: Record<string, string[]>): MyInput
 
 export const trainingFormSchema = z.object({
   cValue: z.number({ message: 'C value is required and must be a number' }),
-  eValue: z.number({ message: 'E value is required and must be a number' }),
   gridSize: z.number({ message: 'Grid size is required and must be a number' }),
   learningValuesFiles: z.instanceof(FileList, { message: 'Learning values file is required' }),
-  accuracy: z.number({ message: 'Accuracy is required and must be a number' }).optional(),
+  accuracy: z.number({ message: 'Accuracy is required and must be a number' }),
 })
 
 export const getJsonFromFile = async <T>(file: File): Promise<T> => {

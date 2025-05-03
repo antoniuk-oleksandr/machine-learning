@@ -5,22 +5,18 @@ export const drawGrid = (
 ) => {
   if (!context || !canvas) return
 
-  // Clear canvas
   context.clearRect(0, 0, canvas.width, canvas.height)
 
-  // Draw grid lines
   const cellSize = canvas.width / gridSize
   context.strokeStyle = '#e5e7eb'
   context.lineWidth = 1
 
   for (let i = 0; i <= gridSize; i++) {
-    // Vertical lines
     context.beginPath()
     context.moveTo(i * cellSize, 0)
     context.lineTo(i * cellSize, canvas.height)
     context.stroke()
 
-    // Horizontal lines
     context.beginPath()
     context.moveTo(0, i * cellSize)
     context.lineTo(canvas.width, i * cellSize)
@@ -60,7 +56,6 @@ const getGridPosition = (
 
   const cellSize = canvas.width / gridSize
 
-  // Get coordinates
   let clientX, clientY
   if ('touches' in e) {
     const rect = canvas.getBoundingClientRect()
@@ -104,13 +99,11 @@ const drawSoftPixel = (
   const cellSize = canvas.width / gridSize;
   const halfSize = Math.floor(pointSize / 2);
 
-  // Calculate opacity based on distance from center
   const getOpacity = (dx: number, dy: number) => {
     const distance = Math.sqrt(dx * dx + dy * dy) / halfSize;
     return Math.max(0, 0.8 * (1 - distance * 0.5)); // Fades from center
   };
 
-  // Draw all cells in the pointSize x pointSize area
   for (let dy = -halfSize; dy <= halfSize; dy++) {
     for (let dx = -halfSize; dx <= halfSize; dx++) {
       const nx = x + dx;
@@ -141,44 +134,27 @@ export const getPixelArray = (
 ): number[] => {
   if (!canvas || !context) return [];
 
-  // Get the original image data
-  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true })!;
+  
+  tempCanvas.width = gridSize;
+  tempCanvas.height = gridSize;
+  
+  tempCtx.drawImage(canvas, 0, 0, gridSize, gridSize);
+  
+  const imageData = tempCtx.getImageData(0, 0, gridSize, gridSize);
   const data = imageData.data;
-
-  // Create downscaled 8x8 grid
   const pixelArray: number[] = [];
-  const cellWidth = canvas.width / gridSize;
-  const cellHeight = canvas.height / gridSize;
 
-  for (let y = 0; y < gridSize; y++) {
-    for (let x = 0; x < gridSize; x++) {
-      // Calculate average darkness in this cell
-      let sum = 0;
-      let count = 0;
-
-      for (let dy = 0; dy < cellHeight; dy++) {
-        for (let dx = 0; dx < cellWidth; dx++) {
-          const px = Math.floor(x * cellWidth + dx);
-          const py = Math.floor(y * cellHeight + dy);
-          const idx = (py * canvas.width + px) * 4;
-
-          // Convert RGBA to grayscale (0-255)
-          const r = data[idx];
-          const g = data[idx + 1];
-          const b = data[idx + 2];
-          const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-
-          sum += gray;
-          count++;
-        }
-      }
-
-      // Normalize to 0.0-1.0 (inverted since canvas is white background)
-      const avg = sum / count;
-      const normalized = 1 - (avg / 255);
-      pixelArray.push(normalized);
-    }
+  for(let i = 0; i < data.length; i += 4) {
+    const alpha = data[i+3] / 255;
+    const r = Math.round((data[i] * alpha) + (255 * (1 - alpha)));
+    const g = Math.round((data[i+1] * alpha) + (255 * (1 - alpha)));
+    const b = Math.round((data[i+2] * alpha) + (255 * (1 - alpha)));
+    
+    const gray = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    pixelArray.push(1 - gray);
   }
 
   return pixelArray;
-}
+};

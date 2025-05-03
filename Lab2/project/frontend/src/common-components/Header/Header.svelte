@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { Button } from 'flowbite-svelte'
+  import HeaderLayout from './HeaderLayout.svelte'
+  import HeaderPageSelect from './components/HeaderPageSelect/HeaderPageSelect.svelte'
 </script>
 
-<div class="w-full flex justify-end">
-  <Button type="button" color="light">Settings</Button>
-</div>
+<HeaderLayout>
+  <HeaderPageSelect />
+</HeaderLayout>

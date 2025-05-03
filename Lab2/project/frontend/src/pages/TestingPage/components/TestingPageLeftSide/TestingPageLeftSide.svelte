@@ -5,13 +5,14 @@
   import { getContext, onDestroy } from 'svelte'
   import type { Writable } from 'svelte/store'
   import type { TestingFormData } from '../../../../types/TestingFormData'
+  import { settingsModalStore } from '../../../../common-stores/settings-modal-store'
 
   let canvas = $state<HTMLCanvasElement | undefined>()
   let isDrawing = $state(false)
   const setIsDrawing = (value: boolean) => (isDrawing = value)
   let context = $state<CanvasRenderingContext2D | null | undefined>(null)
-  let gridSize = $state(24)
-  const pointSize = 1
+  let gridSize = $state($settingsModalStore.gridSize)
+  let pointSize = $state($settingsModalStore.pointSize)
 
   let formDataStore = getContext<Writable<TestingFormData>>('formDataStore')
 
@@ -25,6 +26,9 @@
   const unsubscribe = formDataStore.subscribe((value) => {
     if (typeof value.gridSize === 'number' && value.gridSize >= 8) {
       gridSize = value.gridSize
+    }
+    if (typeof value.pointSize === 'number' && value.pointSize >= 1) {
+      pointSize = value.pointSize
     }
   })
 

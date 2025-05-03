@@ -28,7 +28,4 @@ export const handleTestingFormSubmit = async (data: TestingFormData) => {
   }
 
   sendWebSocketMessage<TestingRequestBody>(wsBody);
-  console.log("Testing form data:", data)
-  console.log("Weights file data:", weights);
-
 }

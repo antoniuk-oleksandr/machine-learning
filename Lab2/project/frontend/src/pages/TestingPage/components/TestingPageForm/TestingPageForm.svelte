@@ -6,13 +6,15 @@
   import { testingFormSchema } from '../../helpers'
   import { setContext } from 'svelte'
   import { handleTestingFormSubmit } from '../../handlers'
+  import { settingsModalStore } from '../../../../common-stores/settings-modal-store'
 
   const { form, errors, data, isSubmitting } = createForm<TestingFormData>({
     extend: validator({ schema: testingFormSchema }),
     onSubmit: handleTestingFormSubmit,
     initialValues: {
-      gridSize: 24,
-      pixels: []
+      gridSize: $settingsModalStore.gridSize,
+      pointSize: $settingsModalStore.pointSize,
+      pixels: [],
     },
   })
 

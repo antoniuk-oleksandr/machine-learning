@@ -1,4 +1,7 @@
 export enum MessageType {
   Training = 1,
-  Testing
+  Testing,
+  TrainingResult,
+  TestingResult,
+  Epoch,
 }
