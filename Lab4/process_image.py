@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def process_image(image_path):
+def process_image(image_path) -> np.ndarray | None:
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     if img is not None:
         resized = cv2.resize(img, (128, 128), interpolation=cv2.INTER_NEAREST)

@@ -1,4 +1,4 @@
-import pandas as pd
+import pandas as pd # type: ignore
 import csv
 from process_image import process_image
 
