@@ -3,13 +3,6 @@ import csv
 from process_image import process_image
 
 
-# Agaricus augustus Fr.; Boletus edulis Bull.; Amanita muscaria (L.) Lam., 1783;
-# Russula olivacea (Schaeff.) Fr.; Mycena galericulata (Scop.) Gray;
-# Clitocybe nebularis (Batsch) Quél.; Amanita rubescens (Pers.) Gray;
-# Russula ochroleuca (Pers.) Fr.; Amanita fulva (Schaeff.) Fr.;
-# Mycena rosea (Schumach.) Gramberg
-
-# 6811 images
 
 
 
@@ -40,24 +33,16 @@ from process_image import process_image
 #             except Exception as e:
 #                 print(f"Error at {i}: {e}")
 
+# 6811 images
 def convert_images():
     output_path = "scientific_vectors.csv"
     df = pd.read_csv("DF20M-train_metadata_PROD.csv")
     data = df[["scientificName", "image_path"]]
 
-    print(data[data['scientificName'].isin(["Amanita muscaria (L.) Lam., 1783"])])  # Check for NaN values
-
-    return
     names = get_training_names()
-    # Ensure filtered data follows the EXACT order of names
     selected_fungi_df = data[data['scientificName'].isin(names)]
-    
-    
     selected_fungi_df = data[data['scientificName'].isin(names)].copy()
-
-    
     selected_fungi_df = selected_fungi_df.sort_values('scientificName')
-    print(selected_fungi_df.value_counts('scientificName'))
 
     with open(output_path, mode="w", newline="") as f:
         writer = csv.writer(f)
@@ -72,7 +57,6 @@ def convert_images():
                     print(f"Skipping image {path} due to processing error.")
                     continue
 
-                # Ensure vector is flattened and normalized
                 writer.writerow([map_index] + vector.tolist())
                 print(f"Processed {i + 1}/{len(selected_fungi_df)}: {name}")
             except Exception as e:
